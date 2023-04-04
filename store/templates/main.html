@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <link rel="icon" type="image/x-icon" href="{% static 'images/car.png' %}">
+	<meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Django Ecommerce</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+    
+    <link rel='stylesheet' href="{% static 'css/main.css' %}">
+    <script type="text/javascript"> var user='{{request.user}}'
+      function getToken(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    const csrftoken = getToken('csrftoken');
+
+    function getCookie(name) {
+      //split cookie string and get all individual name=value pairs in an array
+      var cookieArr=document.cookie.split(";");
+    
+      //loop trough the array elements
+      for(var i = 0; i < cookieArr.length; i++) {
+        var cookiePair=cookieArr[i].split("=");
+    
+        /*Removing whitespace at the beginning of the cookie name and compare it
+        with the given string*/
+        if(name==cookiePair[0].trim()) {
+          //Decode the cookie value and return
+          return decodeURIComponent(cookiePair[1]);
+        }
+      }
+      //return null if not found
+      return null;
+    }
+    var cart = JSON.parse(getCookie('cart'))
+    
+    if (cart == undefined){
+      cart={}
+      console.log('Cart Created', cart)
+      document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
+    }
+    console.log('Cart:', cart)
+    </script>
+</head>
+<body>
+  <!--
+  <div id="geolocation-popup" style="display: none;">
+    <p>Para continuar con tu compra y garantizar una entrega Satisfactoria y por seguridad necesitamos conocer tu ubicacion aproximada</p>
+    <button onclick="getLocation()">Sí, acepto</button>
+    <button onclick="hideGeolocationPopup()">No, gracias</button>
+  </div>
+-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="{% url 'store' %}">EcomerceStore</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a href="{% url 'store' %}" class="btn btn-dark">Store</a>
+              </li>
+            </ul>
+
+                <div class="form-inline my-2 my-lg-0 d-flex justify-content-between">
+                    <a href="{% url 'checkout' %}" class="btn btn-dark" style="margin-right: 10px;">Checkout</a>
+                    <a href="{% url 'cart' %}" class="btn btn-dark">Cart</a>
+
+                    <a href="{% url 'cart' %}">
+                        <img id="cart-icon" src="{% static 'images/car.png' %}">
+                    </a>
+                    <p id="cart-total">{{cartItems}}</p>
+                </div>
+
+
+
+          </div>
+        </div>
+      </nav>
+
+
+    <div class="container">
+    {% block content %}
+    {% endblock %}
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
+
+    <div class="b-example-divider"></div>
+  </body>
+    <div class="containerF">
+      <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+        <div class="col-md-4 d-flex align-items-center">
+          <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
+            <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
+          </a>
+          <span class="mb-3 mb-md-0 text-muted">© 2022 Company, Inc</span>
+        </div>
+    
+        <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+          <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"></use></svg></a></li>
+          <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"></use></svg></a></li>
+          <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"></use></svg></a></li>
+        </ul>
+      </footer>
+    </div>
+    
+
+</html>
